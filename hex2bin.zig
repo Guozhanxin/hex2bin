@@ -60,7 +60,7 @@ pub fn main() !void {
                 if ((file_is_opened == false) or (addr != next_addr)) {
                     std.log.debug("{s}\n", .{"addr error!"});
                     var file_name_buf: [512]u8 = undefined;
-                    var file_name = try std.fmt.bufPrint(&file_name_buf, "{s}_0x{x}.bin", .{ "rtthread", addr });
+                    const file_name = try std.fmt.bufPrint(&file_name_buf, "{s}_0x{x}.bin", .{ "rtthread", addr });
                     std.debug.print("=> {s}\n", .{file_name});
                     //open file and write bin data to rtthread.bin
                     bin_file = try std.fs.cwd().createFile(file_name, .{});
@@ -79,7 +79,7 @@ pub fn main() !void {
                 std.log.debug("{s}\n", .{"end file"});
             },
             @intFromEnum(RecType.ext_seg_addr) => {
-                var tmp: u32 = try parseU32(line[9 .. line.len - 3]);
+                const tmp: u32 = try parseU32(line[9 .. line.len - 3]);
                 addr_offset = tmp << 4;
                 std.log.debug("ext_seg_addr: {s}, addr_offset: {x}\n", .{ line[9 .. line.len - 3], addr_offset });
                 if (addr == 0) {
@@ -90,7 +90,7 @@ pub fn main() !void {
                 std.log.debug("start_seg_addr: {s}\n", .{line[9 .. line.len - 3]});
             },
             @intFromEnum(RecType.ext_linear_addr) => {
-                var tmp: u32 = try parseU32(line[9 .. line.len - 3]);
+                const tmp: u32 = try parseU32(line[9 .. line.len - 3]);
                 addr_offset = tmp << 16;
                 std.log.debug("ext_linear_addr: {s}, addr_offset: {x}\n", .{ line[9 .. line.len - 3], addr_offset });
                 if (addr == 0) {
